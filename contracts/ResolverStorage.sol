@@ -20,6 +20,3 @@ contract ResolverStorage {
 
     mapping(uint256 => mapping(string => string)) _texts;
 }
-
-
-

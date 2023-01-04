@@ -20,7 +20,7 @@ contract Resolver is ResolverStorage, Initializable {
     /// @dev Emitted when change public key hash successfully 
     event PubkeyChanged(uint256 indexed tokenId, bytes32 x, bytes32 y);
     /// @dev Emitted when change text successfully 
-    event TextChanged(uint256 indexed tokenId, string key, string value);
+    event TextChanged(uint256 indexed tokenId, string indexed indexedKey, string key, string value);
 
     /// @dev Permits modifications only by the owner of tokenId
     modifier authorized(uint256 tokenId) {
@@ -40,11 +40,9 @@ contract Resolver is ResolverStorage, Initializable {
     }
 
     /// @dev Set whether reverse the address to did
-    /// @param _addr address of user
     /// @param isReverse true/false
-    function setReverse(address _addr, bool isReverse) public {
-        require(msg.sender == _addr, "authorize fail");
-        _isReverse[_addr] = isReverse;
+    function setReverse(bool isReverse) public {
+        _isReverse[msg.sender] = isReverse;
     }
 
     /// @dev Get the did name from the addr
@@ -106,7 +104,7 @@ contract Resolver is ResolverStorage, Initializable {
     /// @param value the value of info
     function setText(uint256 tokenId, string calldata key, string calldata value) external authorized(tokenId) {
         _texts[tokenId][key] = value;
-        emit TextChanged(tokenId, key, value);
+        emit TextChanged(tokenId, key, key, value);
     }
 
     /// @dev Gets the text information associated with a did
